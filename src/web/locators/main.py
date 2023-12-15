@@ -1,5 +1,5 @@
 
-from web.locator import Locator
+from src.web.locator import Locator
 
 class MainPageLocators():
     SEARCH_INPUT = Locator(

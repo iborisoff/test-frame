@@ -6,8 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.common import TimeoutException
-from locator import Locator
-from web import constants
+from .locator import Locator
+from src.web import constants
 from webdriver_manager.chrome import ChromeDriverManager
 
 class Keys:
@@ -15,18 +15,21 @@ class Keys:
     ESCAPE = Keys.ESCAPE
     TAB = Keys.TAB
 
+class BaseRoute:
+    BASE_URL = 'https://nd.umschool.net/'
+
 class BasePage:
 
     def __init__(self) -> None:
         self._driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 
     @property
-    def page_title(self) -> None:
+    def page_title(self) -> str:
         """ Получить заголовок страницы """
         return self._driver.title
     
     @property
-    def current_url(self) -> None:
+    def current_url(self) -> str:
         """ Получить текущий ulr стриницы """
         return self._driver.current_url
     
@@ -43,6 +46,13 @@ class BasePage:
         """ Открыть станицу по url """
         return self._driver.get(url)
 
+    def close_page(self):
+        """ Открыть закрыть веб-станицу """
+        self._driver.close()
+
+    def wait_timeout(self, timeout: float) -> None:
+        self._driver.implicitly_wait(timeout)
+
     def find_element(self, locator: Locator, timeout: float = constants.TIMEOUT) -> WebElement:
             """ Получить элемент размещенный в DOM дереве  """  
             
@@ -53,9 +63,9 @@ class BasePage:
                   return element  
             
             except TimeoutException as e:
-                 print(e)
-                 return f"Не удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд"             
-            
+                print(f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
+                raise e
+
     def is_element_exist(self, locator: Locator, timeout: float = constants.TIMEOUT) -> bool:
         """ Проверить доступность элемента в DOM дереве """
 
@@ -66,8 +76,8 @@ class BasePage:
                 return True  
         
         except TimeoutException as e:
-                print(e)
-                return f"Не удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд" 
+            print(f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
+            raise e
 
 
     def find_visible_element(self, locator: Locator, timeout: float = constants.TIMEOUT) -> WebElement:
@@ -80,8 +90,8 @@ class BasePage:
             return element
             
         except TimeoutException as e:
-            print(e)
-            return f"Не удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд"
+            print(f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
+            raise e
 
 
 
