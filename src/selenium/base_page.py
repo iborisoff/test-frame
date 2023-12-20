@@ -19,11 +19,19 @@ class Keys:
     TAB = Keys.TAB
 
 
+
 class BasePage:
 
     def __init__(self) -> None:
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument('--disable-notifications')
+        self.options.add_experimental_option("useAutomationExtension", False)
+        self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        self.options.add_experimental_option("prefs", {'intl.accept_languages': 'en'})
         self._driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()))
+            service=ChromeService(ChromeDriverManager().install()),
+            options=self.options
+        )
 
     @property
     def page_title(self) -> str:
