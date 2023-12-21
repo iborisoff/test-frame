@@ -10,11 +10,11 @@ class YandexPassportForm(BasePage):
     )
     EMAIL_TAB_BUTTON = Locator(
         name="кнопка переключения таба 'Почта'",
-        locator="//span[contains(text(), 'Почта')]"
+        locator="//button[@data-type='login']"
     )
     PHONE_TAB_BUTTON = Locator(
         name="кнопка переключения таба 'Телефон'",
-        locator="//span[contains(text(), 'Телефон')]"
+        locator="//button[@data-type='phone']"
     )
     LOGIN_INPUT = Locator(
         name="поле для ввода email",
@@ -41,11 +41,15 @@ class YandexPassportForm(BasePage):
         self.open_page(self.URL)
 
     def enter_email(self, email: str) -> bool:
+        self.click_on_element(self.EMAIL_TAB_BUTTON)
         self.find_element(self.LOGIN_INPUT).send_keys(email)
-        self.find_element(self.SING_IN_BUTTON).click()
+        self.click_on_element(self.SING_IN_BUTTON)
         self.find_visible_element(self.LOGIN_HINT)
         return True
 
-    def enter_phone_number(self) -> None:
-        self.find_element(self.PHONE_TAB_BUTTON).click()
+    def enter_phone_number(self, phone: str = '') -> bool:
+        self.click_on_element(self.PHONE_TAB_BUTTON, 15)
+        self.find_element(self.PHONE_INPUT).send_keys(phone)
+        self.click_on_element(self.SING_IN_BUTTON)
+        return True
 

@@ -4,6 +4,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selenium import webdriver
 from selenium.common import TimeoutException
+from selenium.common.exceptions import ElementClickInterceptedException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -78,6 +79,22 @@ class BasePage:
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise e
 
+
+    def click_on_element(self, locator:Locator, timeout: float = TIMEOUT) -> bool:
+        """ Найти кликабельный элемент """
+        try:
+            element = WebDriverWait(driver=self._driver, timeout=timeout).until(
+                method=EC.element_to_be_clickable((By.XPATH, locator.locator)))
+            element.click()
+            sleep(TIMEOUT)
+            return True
+
+        except ElementClickInterceptedException as e:
+            print(
+                f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
+            raise e
+
+
     def is_element_exist(self, locator: Locator, timeout: float = TIMEOUT) -> bool:
         """ Проверить доступность элемента в DOM дереве """
 
@@ -111,16 +128,6 @@ class BasePage:
             )
             return element
 
-        except TimeoutException as e:
-            print(
-                f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
-            raise e
-
-    def click_on_element(self, locator: Locator, timeout: float = TIMEOUT) -> None:
-        try:
-            element = self.find_element(locator)
-            element.click()
-            sleep(TIMEOUT)
         except TimeoutException as e:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
