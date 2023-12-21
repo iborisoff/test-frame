@@ -1,4 +1,4 @@
-from src.selenium.locator import Locator
+from src.core.selenium import Locator
 
 from .main_page import MainPage
 

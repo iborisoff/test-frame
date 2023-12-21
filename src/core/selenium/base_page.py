@@ -1,6 +1,4 @@
-from src.constants.constants import TIMEOUT
-from src.selenium.locator import Locator
-from webdriver_manager.chrome import ChromeDriverManager
+from time import sleep
 
 from selenium import webdriver
 from selenium.common import TimeoutException
@@ -10,7 +8,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from time import sleep
+from webdriver_manager.chrome import ChromeDriverManager
+
+from src.core.constants.constants import TIMEOUT
+from src.core.exeptions.exeprions import (ClickableElementNotFoundedError,
+                                          ElementNotFounderError,
+                                          VisibleElementNotFounded,
+                                          LocatedElementNotFounded)
+from src.core.selenium.locator import Locator
 
 
 class Keys:
@@ -65,10 +70,10 @@ class BasePage:
             )
             return element
 
-        except TimeoutException as e:
+        except TimeoutException:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
-            raise e
+            raise ElementNotFounderError
 
     def is_element_exist(self, locator: Locator, timeout: float = TIMEOUT) -> bool:
         """ Проверить доступность элемента в DOM дереве """
@@ -80,10 +85,10 @@ class BasePage:
             )
             return True
 
-        except TimeoutException as e:
+        except TimeoutException:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
-            raise e
+            raise LocatedElementNotFounded
 
     def go_back(self):
         """ Перейти на пердыдущую страницу """
@@ -103,17 +108,17 @@ class BasePage:
             )
             return element
 
-        except TimeoutException as e:
+        except TimeoutException:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
-            raise e
+            raise VisibleElementNotFounded
 
     def click_on_element(self, locator: Locator, timeout: float = TIMEOUT) -> None:
         try:
             element = self.find_element(locator)
             element.click()
             sleep(TIMEOUT)
-        except TimeoutException as e:
+        except TimeoutException:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
-            raise e
+            raise ClickableElementNotFoundedError
