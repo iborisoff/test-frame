@@ -1,6 +1,6 @@
 from src.selenium.base_page import BasePage
 from src.selenium.locator import Locator
-from time import sleep
+
 
 class YandexPassportForm(BasePage):
     URL = 'https://passport.yandex.ru/'
@@ -52,4 +52,3 @@ class YandexPassportForm(BasePage):
         self.find_element(self.PHONE_INPUT).send_keys(phone)
         self.click_on_element(self.SING_IN_BUTTON)
         return True
-

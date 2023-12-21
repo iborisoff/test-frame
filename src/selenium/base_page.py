@@ -1,6 +1,4 @@
-from src.constants.constants import TIMEOUT
-from src.selenium.locator import Locator
-from webdriver_manager.chrome import ChromeDriverManager
+from time import sleep
 
 from selenium import webdriver
 from selenium.common import TimeoutException
@@ -11,7 +9,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from time import sleep
+from src.constants.constants import TIMEOUT
+from src.selenium.locator import Locator
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 class Keys:
@@ -20,15 +20,16 @@ class Keys:
     TAB = Keys.TAB
 
 
-
 class BasePage:
 
     def __init__(self) -> None:
         self.options = webdriver.ChromeOptions()
         self.options.add_argument('--disable-notifications')
         self.options.add_experimental_option("useAutomationExtension", False)
-        self.options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        self.options.add_experimental_option("prefs", {'intl.accept_languages': 'en'})
+        self.options.add_experimental_option(
+            "excludeSwitches", ["enable-automation"])
+        self.options.add_experimental_option(
+            "prefs", {'intl.accept_languages': 'en'})
         self._driver = webdriver.Chrome(
             service=ChromeService(ChromeDriverManager().install()),
             options=self.options
@@ -79,8 +80,7 @@ class BasePage:
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise e
 
-
-    def click_on_element(self, locator:Locator, timeout: float = TIMEOUT) -> bool:
+    def click_on_element(self, locator: Locator, timeout: float = TIMEOUT) -> bool:
         """ Найти кликабельный элемент """
         try:
             element = WebDriverWait(driver=self._driver, timeout=timeout).until(
@@ -93,7 +93,6 @@ class BasePage:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise e
-
 
     def is_element_exist(self, locator: Locator, timeout: float = TIMEOUT) -> bool:
         """ Проверить доступность элемента в DOM дереве """
