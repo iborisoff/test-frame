@@ -1,4 +1,4 @@
-from time import sleep
+import logging
 
 from selenium import webdriver
 from selenium.common import TimeoutException
@@ -64,7 +64,7 @@ class BasePage:
             return element
 
         except TimeoutException:
-            print(
+            logging.error(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise ElementNotFounderError
 
@@ -79,7 +79,7 @@ class BasePage:
             return True
 
         except TimeoutException:
-            print(
+            logging.error(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise LocatedElementNotFounded
 
@@ -102,7 +102,7 @@ class BasePage:
             return element
 
         except TimeoutException:
-            print(
+            logging.error(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise VisibleElementNotFounded
 
@@ -110,6 +110,6 @@ class BasePage:
         try:
             self.find_element(locator).click()
         except TimeoutException:
-            print(
+            logging.error(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
             raise ClickableElementNotFoundedError
