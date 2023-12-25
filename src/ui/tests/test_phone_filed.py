@@ -8,7 +8,7 @@ class TestPhoneFiled:
 
     @pytest.mark.smok
     @pytest.mark.open_page(YandexPassportForm())
-    def test_phone_input_with_empty_number(self, open_page, get_test_user):
+    def test_phone_input_with_empty_number(self, open_page):
         current_page = open_page
         assert current_page.enter_phone_number(), ERROR_MESSAGE
 

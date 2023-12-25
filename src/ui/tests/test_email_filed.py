@@ -13,13 +13,13 @@ class TestEmailField():
 
     @pytest.mark.smok
     @pytest.mark.open_page(YandexPassportForm())
-    def test_email_input_with_random_symbols(self, open_page, get_test_user):
+    def test_email_input_with_random_symbols(self, open_page):
         current_page = open_page
-        assert current_page.enter_email(generate_random_string(10)), ERROR_MESSAGE
+        assert current_page.enter_email(generate_random_string(10))
 
     @pytest.mark.smok
     @pytest.mark.open_page(YandexPassportForm())
-    def test_email_input_empty_enter(self, open_page, get_test_user):
+    def test_email_input_empty_enter(self, open_page):
         current_page = open_page
         assert current_page.enter_email(''), ERROR_MESSAGE
 

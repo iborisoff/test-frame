@@ -40,15 +40,13 @@ class YandexPassportForm(BasePage):
     def open_current_page(self):
         self.open_page(self.URL)
 
-    def enter_email(self, email: str) -> bool:
+    def enter_email(self, email: str) -> None:
         self.click_on_element(self.EMAIL_TAB_BUTTON)
         self.find_element(self.LOGIN_INPUT).send_keys(email)
         self.click_on_element(self.SING_IN_BUTTON)
         self.find_visible_element(self.LOGIN_HINT)
-        return True
 
-    def enter_phone_number(self, phone: str = '') -> bool:
+    def enter_phone_number(self, phone: str = '') -> None:
         self.click_on_element(self.PHONE_TAB_BUTTON, 15)
         self.find_element(self.PHONE_INPUT).send_keys(phone)
         self.click_on_element(self.SING_IN_BUTTON)
-        return True
