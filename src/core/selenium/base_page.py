@@ -4,9 +4,8 @@ from selenium import webdriver
 from selenium.common import TimeoutException
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -18,12 +17,6 @@ from src.core.exeptions.exeprions import (ClickableElementNotFoundedError,
 from src.core.selenium.locator import Locator
 
 
-class Keys:
-    ENTER = Keys.ENTER
-    ESCAPE = Keys.ESCAPE
-    TAB = Keys.TAB
-
-
 class BasePage:
 
     def __init__(self) -> None:
@@ -32,12 +25,12 @@ class BasePage:
 
     @property
     def page_title(self) -> str:
-        """ Получить заголовок страницы """
+        """ Получить заголовок страница """
         return self._driver.title
 
     @property
     def current_url(self) -> str:
-        """ Получить текущий ulr стриницы """
+        """ Получить текущий ulr страницы """
         return self._driver.current_url
 
     @property
@@ -65,7 +58,7 @@ class BasePage:
 
         try:
             element = WebDriverWait(driver=self._driver, timeout=timeout).until(
-                method=EC.presence_of_element_located(
+                method=ec.presence_of_element_located(
                     (By.XPATH, locator.locator))
             )
             return element
@@ -80,7 +73,7 @@ class BasePage:
 
         try:
             WebDriverWait(driver=self._driver, timeout=timeout).until(
-                method=EC.presence_of_element_located(
+                method=ec.presence_of_element_located(
                     (By.XPATH, locator.locator))
             )
             return True
@@ -103,7 +96,7 @@ class BasePage:
 
         try:
             element = WebDriverWait(driver=self._driver, timeout=timeout).until(
-                method=EC.visibility_of_element_located(
+                method=ec.visibility_of_element_located(
                     (By.XPATH, locator.locator))
             )
             return element
@@ -115,9 +108,7 @@ class BasePage:
 
     def click_on_element(self, locator: Locator, timeout: float = TIMEOUT) -> None:
         try:
-            element = self.find_element(locator)
-            element.click()
-            sleep(TIMEOUT)
+            self.find_element(locator).click()
         except TimeoutException:
             print(
                 f"\nНе удалось найти элемент в DOM дереве с локатором {locator.locator} в течение {timeout} секунд")
