@@ -50,9 +50,6 @@ class BasePage:
         """ Открыть закрыть веб-станицу """
         self._driver.close()
 
-    def wait_timeout(self, timeout: float) -> None:
-        self._driver.implicitly_wait(timeout)
-
     def find_element(self, locator: Locator, timeout: float = TIMEOUT) -> WebElement:
         """ Получить элемент размещенный в DOM дереве  """
 
